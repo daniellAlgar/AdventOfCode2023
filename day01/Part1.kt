@@ -1,7 +1,7 @@
 import java.io.File
 
 fun main() {
-    val lines = File("Day01/input.txt").readLines()
+    val lines = File("day01/input.txt").readLines()
     println("Day01_1: ${lines.sumOf { concatFirstAndLastDigit(it) }}") // 55090
 }
 

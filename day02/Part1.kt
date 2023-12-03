@@ -1,9 +1,9 @@
-package Day02
+package day02
 
 import java.io.File
 
 fun main() {
-    val lines = File("Day02/input.txt").readLines()
+    val lines = File("day02/input.txt").readLines()
 
     val games = lines.map { parseGame(it) }
     val possibleGames: List<Pair<Int, List<Map<String, Int>>>> =
