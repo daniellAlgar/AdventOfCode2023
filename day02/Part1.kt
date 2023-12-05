@@ -13,7 +13,7 @@ fun main() {
     println("Sum of IDs: ${possibleGames.sumOf { it.first }}") // 2685
 }
 
-fun parseGame(line: String): Pair<Int, List<Map<String, Int>>> {
+internal fun parseGame(line: String): Pair<Int, List<Map<String, Int>>> {
     val parts = line.split(":")
     val gameId = (Regex("\\d+")).find(parts[0])!!.value.toInt()
     val sets = parts[1].split(";")
