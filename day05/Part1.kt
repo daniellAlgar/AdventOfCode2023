@@ -18,7 +18,7 @@ fun main() {
     println("Lowest location number: ${finalLocations.minOrNull()}") // 551761867
 }
 
-private fun convertNumber(number: Long, mappings: List<Mapping>): Long {
+internal fun convertNumber(number: Long, mappings: List<Mapping>): Long {
     mappings.forEach { mapping ->
         if (number in mapping.sourceStart until (mapping.sourceStart + mapping.rangeLength)) {
             return mapping.destinationStart + (number - mapping.sourceStart)
@@ -29,7 +29,11 @@ private fun convertNumber(number: Long, mappings: List<Mapping>): Long {
 
 private fun parseInput(fileName: String): Pair<List<Long>, List<List<Mapping>>> {
     val lines = File(fileName).readLines()
-    val seeds = lines.first().removePrefix("seeds: ").split(" ").map { it.toLong() }
+    val seeds = lines
+        .first()
+        .removePrefix("seeds: ")
+        .split(" ")
+        .map { it.toLong() }
 
     val mappings = mutableListOf<List<Mapping>>()
     var currentMappings = mutableListOf<Mapping>()
