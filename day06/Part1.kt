@@ -24,4 +24,3 @@ fun countWaysToBeatRecord(time: Long, record: Long): Long {
     }
     return count
 }
-
