@@ -5,18 +5,12 @@ import java.io.File
 fun main() {
     val lines = File("day07/input.txt").readLines()
 
-    val cardOrder = listOf("A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2")
+    val cardOrder = listOf("A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J")
     val cardValues = parseCardValues(lines)
     val sortedCards = sortCards(cardValues, cardOrder)
 
-    println("Final scores: ${calculateScores(sortedCards, cardValues).sum()}") // 250232501
+    println("Final scores: ${calculateScores(sortedCards, cardValues).sum()}") // 249138943
 }
-
-fun parseCardValues(lines: List<String>): Map<String, Int> =
-    lines.associate {
-        val (card, value) = it.split(" ")
-        card to value.toInt()
-    }
 
 private fun sortCards(cardValues: Map<String, Int>, cardOrder: List<String>): List<String> =
     cardValues.keys.sortedWith { a, b ->
@@ -37,6 +31,13 @@ private fun calculateCardStrength(card: String, cardOrder: List<String>): Long {
 }
 
 private fun handRanking(card: String): Int {
+    if ("J" in card) {
+        val cardOrder = listOf("A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2")
+        return cardOrder.filter { it != "J" }
+            .minOfOrNull { modifiedCard -> handRanking(card.replace("J", modifiedCard)) }
+            ?: throw IllegalArgumentException("Invalid card hand: $card")
+    }
+
     val cardCount = card.groupingBy { it }.eachCount()
     return when (cardCount.size) {
         1 -> 1
@@ -57,8 +58,3 @@ private fun handRanking(card: String): Int {
         else -> throw IllegalArgumentException("Invalid card hand: $card")
     }
 }
-
-fun calculateScores(cards: List<String>, cardValues: Map<String, Int>): List<Int> =
-    cards.mapIndexed { index, card ->
-        cardValues[card]!! * (index + 1)
-    }
