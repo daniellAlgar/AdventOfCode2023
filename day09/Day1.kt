@@ -7,9 +7,8 @@ fun main() {
     println("Sum of extrapolated values: ${calculateSum(lines)}") // 1938731307
 }
 
-fun calculateSum(lines: List<String>): Int {
-    return lines.sumOf { findNextValue(it) }
-}
+fun calculateSum(lines: List<String>): Int =
+    lines.sumOf { findNextValue(it) }
 
 fun findNextValue(line: String): Int {
     val numbers = line.split(" ").map { it.toInt() }
@@ -27,6 +26,5 @@ fun findNextValue(line: String): Int {
     return sequences.first().last()
 }
 
-fun generateDifferences(numbers: List<Int>): List<Int> {
-    return numbers.zipWithNext { a, b -> b - a }
-}
+fun generateDifferences(numbers: List<Int>): List<Int> =
+    numbers.zipWithNext { a, b -> b - a }
