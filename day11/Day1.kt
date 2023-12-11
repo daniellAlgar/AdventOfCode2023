@@ -1,13 +1,14 @@
 package day11
 
 import java.io.File
-import java.util.*
+import kotlin.math.abs
 
 fun main() {
     val lines = File("day11/input.txt").readLines()
     val galaxies = mutableListOf<Pair<Int, Int>>()
-    val expandedLines = expandUniverse(lines, galaxies)
-    println("Total length of all shortest paths: ${calculateTotalPathLength(expandedLines, galaxies)}") // 9605127
+    expandUniverse(lines, galaxies)
+    val totalPathLength = calculateTotalPathLengthUsingManhattanDistance(galaxies)
+    println("Total length of all shortest paths: $totalPathLength") // 9605127
 }
 
 fun expandUniverse(lines: List<String>, galaxies: MutableList<Pair<Int, Int>>): List<String> {
@@ -35,35 +36,16 @@ fun expandUniverse(lines: List<String>, galaxies: MutableList<Pair<Int, Int>>): 
     return expandedLines
 }
 
-fun calculateTotalPathLength(lines: List<String>, galaxies: List<Pair<Int, Int>>): Int {
+fun calculateTotalPathLengthUsingManhattanDistance(galaxies: List<Pair<Int, Int>>): Int {
     var totalLength = 0
     for (i in galaxies.indices) {
         for (j in i + 1 until galaxies.size) {
-            totalLength += findShortestPathLength(lines, galaxies[i], galaxies[j])
+            totalLength += calculateManhattanDistance(galaxies[i], galaxies[j])
         }
     }
     return totalLength
 }
 
-fun findShortestPathLength(lines: List<String>, start: Pair<Int, Int>, end: Pair<Int, Int>): Int {
-    val visited = mutableSetOf<Pair<Int, Int>>()
-    val queue = LinkedList<Pair<Pair<Int, Int>, Int>>()
-    queue.offer(Pair(start, 0))
-
-    while (queue.isNotEmpty()) {
-        val (current, length) = queue.poll()
-        if (current == end) return length
-
-        if (!visited.add(current)) continue
-
-        val (x, y) = current
-        val directions = listOf(Pair(x - 1, y), Pair(x + 1, y), Pair(x, y - 1), Pair(x, y + 1))
-        for (dir in directions) {
-            val (nx, ny) = dir
-            if (nx in lines.indices && ny in lines[0].indices && !visited.contains(dir)) {
-                queue.offer(Pair(dir, length + 1))
-            }
-        }
-    }
-    return -1 // Shouldn't happen
+fun calculateManhattanDistance(start: Pair<Int, Int>, end: Pair<Int, Int>): Int {
+    return abs(start.first - end.first) + abs(start.second - end.second)
 }
